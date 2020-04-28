@@ -67,6 +67,23 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'IBMPlexSans-Medium',
   },
+  itemName1: {
+    fontSize: 18,
+    fontFamily: 'IBMPlexSans-Medium',
+  },
+  itemName2: {
+    fontSize: 18,
+    fontFamily: 'IBMPlexSans-Medium',
+  },
+  itemName3: {
+    fontSize: 18,
+    fontFamily: 'IBMPlexSans-Medium',
+    color:"#FFF",
+    backgroundColor: "#1062FE",
+    height: 30,
+    width: '40%',
+    textAlign: 'center'
+  },
   itemQuantity: {
     fontSize: 14,
     fontFamily: 'IBMPlexSans-Medium',
@@ -80,7 +97,7 @@ const styles = StyleSheet.create({
 });
 
 const SearchResources = function ({ route, navigation }) {
-  const [query, setQuery] = React.useState({ type: 'Food', name: '' });
+  const [query, setQuery] = React.useState({ type: 'Physical service', name: '' });
   const [items, setItems] = React.useState([]);
   const [info, setInfo] = React.useState('');
 
@@ -93,6 +110,11 @@ const SearchResources = function ({ route, navigation }) {
           <Text style={styles.itemQuantity}> ( {props.quantity} ) </Text>
         </View>
         <Text style={styles.itemDescription}>{props.description}</Text>
+        <View style={styles.itemView}>
+              <Text style={styles.itemName1}>CheckIn</Text>
+              <Text style={styles.itemName1}>CheckOut</Text>
+              <Text style={styles.itemName3}>Place Request</Text>
+            </View>
       </TouchableOpacity>
     );
   };
@@ -116,15 +138,15 @@ const SearchResources = function ({ route, navigation }) {
   return (
     <View style={styles.outerView}>
       <View style={styles.inputsView}>
-        <Text style={styles.label}>Type</Text>
+        <Text style={styles.label}>Service</Text>
         <PickerSelect
           style={{ inputIOS: styles.selector }}
           value={query.type}
           onValueChange={(t) => setQuery({ ...query, type: t })}
           items={[
-              { label: 'Food', value: 'Food' },
-              { label: 'Help', value: 'Help' },
-              { label: 'Other', value: 'Other' }
+            { label: 'Physical service', value: 'Physical service' },
+            { label: 'Digital service', value: 'Digital service' },
+            { label: 'Professional service', value: 'Professional service' }
           ]}
         />
         <Text style={styles.label}>Name</Text>

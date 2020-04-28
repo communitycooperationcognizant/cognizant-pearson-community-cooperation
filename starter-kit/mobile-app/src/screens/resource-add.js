@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   typeArea: {
-    width: '40%'
+    width: '100%'
   },
   label: {
     fontFamily: 'IBMPlexSans-Medium',
@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
     borderColor: '#D0E2FF',
     borderWidth: 2,
     padding: 16,
-    marginBottom: 25
+    marginBottom: 25,
+    width: '100%'
   },
   quantityArea: {
-    width: '40%'
+    width: '100%'
   },
   textInput: {
     fontFamily: 'IBMPlexSans-Medium',
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
 });
 
 const AddResource = function ({ navigation }) {
-  const clearItem = { userID: userID(), type: 'Food', name: '', description: '', location: '', contact: '', quantity: '1' }
+  const clearItem = { userID: userID(), type: 'Physical service', name: '', description: '', location: '', contact: 'Food', quantity: '1' }
   const [item, setItem] = React.useState(clearItem);
   const [useLocation, setUseLocation] = React.useState(true);
   const [position, setPosition] = React.useState({})
@@ -124,19 +125,52 @@ const AddResource = function ({ navigation }) {
   
   return (
     <ScrollView style={styles.outerView}>
-      <View style={styles.splitView}>
         <View style={styles.typeArea}>
-          <Text style={styles.label}>Type</Text>
+          <Text style={styles.label}>Select service</Text>
           <PickerSelect
             style={{ inputIOS: styles.selector }}
             value={item.type}
             onValueChange={(t) => setItem({ ...item, type: t })}
             items={[
-                { label: 'Food', value: 'Food' },
-                { label: 'Help', value: 'Help' },
-                { label: 'Other', value: 'Other' }
+                { label: 'Physical service', value: 'Physical service' },
+                { label: 'Digital service', value: 'Digital service' },
+                { label: 'Professional service', value: 'Professional service' }
             ]}
           />
+          <Text style={styles.label}>Select category</Text>
+          {item.type === "Physical service" && 
+          <PickerSelect
+          style={{ inputIOS: styles.selector }}
+          value={item.contact}
+          onValueChange={(t) => setItem({ ...item, contact: t })}
+          items={[
+              { label: 'Food', value: 'Food' },
+              { label: 'Help', value: 'Help' },
+              { label: 'Others', value: 'Others' }
+          ]}
+        />}
+        {item.type === "Digital service" && 
+          <PickerSelect
+          style={{ inputIOS: styles.selector }}
+          value={item.contact}
+          onValueChange={(t) => setItem({ ...item, contact: t })}
+          items={[
+              { label: 'Upload Files', value: 'Upload Files' }
+
+          ]}
+        />}
+        {item.type === "Professional service" && 
+          <PickerSelect
+          style={{ inputIOS: styles.selector }}
+          value={item.contact}
+          onValueChange={(t) => setItem({ ...item, contact: t })}
+          items={[
+              { label: 'Plumbing', value: 'Plumbing' },
+              { label: 'Electrical', value: 'Electrical' },
+              { label: 'Others', value: 'Others' }
+          ]}
+        />}
+          
         </View>
         <View style={styles.quantityArea}>
           <Text style={styles.label}>Quantity</Text>
@@ -151,7 +185,6 @@ const AddResource = function ({ navigation }) {
             keyboardType='numeric'
           />
         </View>
-      </View>
 
       <Text style={styles.label}>Name</Text>
       <TextInput
@@ -163,16 +196,6 @@ const AddResource = function ({ navigation }) {
         enablesReturnKeyAutomatically={true}
         placeholder='e.g., Tomotatoes'
         blurOnSubmit={false}
-      />
-      <Text style={styles.label}>Contact</Text>
-      <TextInput
-        style={styles.textInput}
-        value={item.contact}
-        onChangeText={(t) => setItem({ ...item, contact: t})}
-        onSubmitEditing={sendItem}
-        returnKeyType='send'
-        enablesReturnKeyAutomatically={true}
-        placeholder='user@domain.com'
       />
       <Text style={styles.label}>Description</Text>
       <TextInput

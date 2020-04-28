@@ -152,7 +152,7 @@ app.get('/api/resource', (req, res) => {
  */
 let types = ["Food", "Other", "Help"]
 app.post('/api/resource', (req, res) => {
-  if (!req.body.type) {
+  /*if (!req.body.type) {
     return res.status(422).json({ errors: "Type of item must be provided"});
   }
   if (!types.includes(req.body.type)) {
@@ -163,7 +163,7 @@ app.post('/api/resource', (req, res) => {
   }
   if (!req.body.contact) {
     return res.status(422).json({ errors: "A method of conact must be provided"});
-  }
+  }*/
   const type = req.body.type;
   const name = req.body.name;
   const description = req.body.description || '';

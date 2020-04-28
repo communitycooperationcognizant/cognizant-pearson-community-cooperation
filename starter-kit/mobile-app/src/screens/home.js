@@ -1,14 +1,12 @@
-import React from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Button, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Image, Text, TouchableOpacity, Button, TextInput, Picker } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   center: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    backgroundColor: '#FFFFFF'
+    justifyContent: 'center',
+    margin: 20
   },
   scroll: {
     paddingLeft: 20,
@@ -17,14 +15,14 @@ const styles = StyleSheet.create({
     paddingTop: 75
   },
   image: {
-    alignSelf: 'flex-start',
-    height: '20%',
-    width:'50%',
+    alignSelf: 'center',
+    height: 135,
+    width: 135,
     resizeMode: 'contain'
   },
   title: {
     fontFamily: 'IBMPlexSans-Medium',
-    fontSize: 36,
+    fontSize: 30,
     color: '#323232',
     paddingBottom: 15
   },
@@ -38,7 +36,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   content: {
-    fontFamily: 'IBMPlexSans-Light',
+    fontFamily: 'IBMPlexSans-Medium',
     color: '#323232',
     marginTop: 10,
     marginBottom: 10,
@@ -56,46 +54,80 @@ const styles = StyleSheet.create({
     fontSize: 16,
     overflow: 'hidden',
     padding: 12,
-    textAlign:'center',
+    textAlign: 'center',
     marginTop: 15
+  },
+  picker: {
+    fontFamily: 'IBMPlexSans-Medium',
+    fontSize: 16,
+    marginTop: 15
+  },
+  textInput: {
+    fontFamily: 'IBMPlexSans-Medium',
+    flex: 1,
+    borderColor: '#D0E2FF',
+    borderWidth: 2,
+    padding: 14,
+    elevation: 2,
+    marginBottom: 25
   }
 });
 
-const Home = () => (
-  <View style={styles.center}>
-    <ScrollView style={styles.scroll}>
-      <Image
-        style={styles.image}
-        source={require('../images/2020-cfc-512.png')}
-      />
-      <Text style={styles.subtitle}>Starter Kit</Text>
-      <Text style={styles.title}>Community Collaboration</Text>
-      <Text style={styles.content}>
-        There is a growing interest in enabling communities to cooperate among
-        themselves to solve problems in times of crisis, whether it be to
-        advertise where supplies are held, offer assistance for collections, or
-        other local services like volunteer deliveries.
-      </Text>
-      <Text style={styles.content}>
-        What is needed is a solution that empowers communities to easily connect
-        and provide this information to each other.
-      </Text>
-      <Text style={styles.content}>
-        This solution starter kit provides a mobile application, along with
-        server-side components, that serves as the basis for developers to build
-        out a community cooperation application that addresses local needs for
-        food, equipment, and resources.
-      </Text>
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity onPress={() => Linking.openURL('https://developer.ibm.com/callforcode')}>
-          <Text style={styles.button}>Learn more</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL('https://github.com/Call-for-Code/Solution-Starter-Kit-Cooperation-2020')}>
-          <Text style={styles.button}>Get the code</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  </View>
-);
+const Home = () => {
+  const [community, setCommunity] = useState("Select your Community");
+  const [category, setCategory] = useState("Select your Category");
+  const [name, setName] = useState("");
+  return (
+    <View style={styles.center}>
+      <ScrollView style={styles.scroll}>
+        <Text style={styles.title}>Join Community</Text>
+        {(community === "Select your Community" || category === "Select your Category") &&
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={(t) => setName(t)}
+            placeholder='Enter you name'
+          />
+        }
+        {(community === "Select your Community" || category === "Select your Category") &&
+          <>
+            <Picker style={styles.picker}
+              selectedValue={community}
+
+              onValueChange={(itemValue, itemIndex) => setCommunity(itemValue)} >
+              <Picker.Item label="Select your Community" value="Select your Community" />
+              <Picker.Item label="Covid" value="Covid" />
+              <Picker.Item label="Quarantine" value="Quarantine" />
+              <Picker.Item label="Lockdown" value="Lockdown" />
+            </Picker>
+
+            <Picker style={styles.picker}
+              selectedValue={category}
+
+              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)} >
+              <Picker.Item label="Select your Category" value="Select your Category" />
+              <Picker.Item label="Volunteers" value="Volunteers" />
+              <Picker.Item label="Doctor and health care" value="Doctor and health care" />
+              <Picker.Item label="Animal care" value="Animal care" />
+              <Picker.Item label="Government Authorities" value="Government Authorities" />
+
+            </Picker>
+          </>
+        }
+        {community !== "Select your Community" && category !== "Select your Category" &&
+          <>
+            <Text style={styles.title}>Welcome {name}</Text>
+            <Image
+              style={styles.image}
+              source={require('../images/tick.png')}
+            />
+            <Text style={styles.content}>You are in {community} - {category} Community.</Text>
+            <Text style={styles.content}>You can also contribute to other communities in donate section</Text>
+          </>
+        }
+      </ScrollView>
+    </View>
+  )
+};
 
 export default Home;
